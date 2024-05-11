@@ -1,0 +1,37 @@
+<resources>
+    <!--Menu-->
+    <string name="app_name">TikTakToe_Jet</string>
+    <string name="TikTakToe">Tik Tak Toe</string>
+    <string name="Ayuda"> Ayuda</string>
+    <string name="Partida">Comenzar partida</string>
+    <string name="Salir">Salir de la aplicación</string>
+
+    <!--Help-->
+    <string name="Reglas">El tres en línea, también conocido como ceros y cruces, tres en raya (España, México, Ecuador y Bolivia), cerito cruz (en Cuba), michi (en Perú), triqui (en Colombia), cuadritos, juego del gato, gato (en Chile, Costa Rica y México), tatetí (en Argentina, Paraguay y Uruguay), totito (en Guatemala), triqui traka, equis cero (en Honduras), o la vieja (en Venezuela) es un juego de lápiz y papel entre dos jugadores: O y X, que marcan los espacios de un tablero de 3×3 alternadamente.</string>
+    <string name="Menu">Volver al menú principal</string>
+
+    <!--PreparationGame-->
+    <string name="Conf">Configuración</string>
+    <string name="Alias">Alias identificativo</string>
+    <string name="HintAlias">Escribe aqui tu alias</string>
+    <string name="AliasError">Alias vacio, escriba su alias</string>
+    <string name="Dificultad">Dificultad</string>
+    <string name="Tiempo">Control de tiempo</string>
+    <string name="Start">Empezar partida</string>
+
+    <!--Game-->
+    <string name="Game">Partida</string>
+    <string name="Score">Score</string>
+    <string name="Timer">Time:</string>
+    <string name="End">Finalizar partida</string>
+    <!--Result-->
+    <string name="Res">Resultados</string>
+    <string name="Data">Día y hora</string>
+    <string name="Log">Valores del Log</string>
+    <string name="HintMail">micorreo@correo.com</string>
+    <string name="email">E-mail destinatario</string>
+    <string name="btnEmail">Enviar email</string>
+    <string name="NewGame">Nueva partida</string>
+
+
+</resources>
