@@ -31,37 +31,47 @@ import com.example.simonsays_jet.R
 @Composable
 fun Help(navController: NavHostController) { //Necesitamos este controlador
     Column(
-        modifier = Modifier.fillMaxSize().background(colorResource(id = R.color.purple_200)),
-        verticalArrangement = Arrangement.Top, // Alineamos arriba
-        horizontalAlignment = Alignment.CenterHorizontally // Y centramos
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.question_mark),
-            contentDescription = null
-        )
-        Text(
-            text = stringResource(id = R.string.Ayuda),
-            fontSize = 24.sp,
-            modifier = Modifier.padding(start = 10.dp),
-            fontWeight = FontWeight.Bold
-        )
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.purple_200)),
 
-        Row {
+    ) {
+        Row(
+            modifier = Modifier.padding(bottom = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement =Arrangement.Start ){
+
+            Image(
+                painter = painterResource(id = R.drawable.question_mark),
+                contentDescription = null
+            )
+            Text(
+                text = stringResource(id = R.string.Ayuda),
+                fontSize = 24.sp,
+                modifier = Modifier.padding(start = 10.dp),
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+
+        Row(modifier = Modifier.padding(start = 10.dp).padding(end = 10.dp).padding(bottom = 10.dp)) {
             Text(
                 text = stringResource(id = R.string.Reglas),
                 fontSize = 18.sp,
-                textAlign = TextAlign.Justify,
-                modifier = Modifier.widthIn(max = 380.dp)
+                textAlign = TextAlign.Justify
             )
         }
-        Row(modifier = Modifier.padding(top = 20.dp)) {
+        Column() {
             Button(
-                onClick = { navController.navigate("screen_menu") },
-                modifier = Modifier
-                    .height(45.dp)
-                    .width(150.dp)
-            ) {
-                Text(text = "Volver al inicio")
+                onClick = { navController.navigate("screen_menu") }) {
+                Image(
+                    painter = painterResource(id = R.drawable.flecha_izquierda),
+                    contentDescription = null
+                )
+                Text(
+                    text = stringResource(id = R.string.Menu),
+                    modifier = Modifier.padding(start = 10.dp)
+                )
             }
         }
     }
