@@ -32,12 +32,12 @@ import com.example.tiktaktoe_jet.ui.theme.AppTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Help(navController: NavHostController){ //Necesitamos este controlador
+fun Help(navController: NavHostController) { //Necesitamos este controlador
     Column(
-        modifier = Modifier.fillMaxSize().background(colorResource(id = R.color.purple_200)) ,
+        modifier = Modifier.fillMaxSize().background(colorResource(id = R.color.purple_200)),
         verticalArrangement = Arrangement.Top, // Alineamos arriba
         horizontalAlignment = Alignment.CenterHorizontally // Y centramos
-    ){
+    ) {
         Image(
             painter = painterResource(id = R.drawable.question_mark),
             contentDescription = null
@@ -48,24 +48,27 @@ fun Help(navController: NavHostController){ //Necesitamos este controlador
             modifier = Modifier.padding(start = 10.dp),
             fontWeight = FontWeight.Bold
         )
-    }
-    Row {
-        Text(text = stringResource(id = R.string.Ayuda),
-            fontSize = 18.sp,
-            textAlign = TextAlign.Justify,
-            modifier = Modifier.widthIn(max = 380.dp)
-        )
-    }
-    Row {
-        Button(
-            onClick = { navController.navigate("inicio") },
-            modifier = Modifier
-                .height(45.dp)
-                .width(150.dp)
-        ) {
-            Text(text = "Volver al inicio")
+
+        Row {
+            Text(
+                text = stringResource(id = R.string.Reglas),
+                fontSize = 18.sp,
+                textAlign = TextAlign.Justify,
+                modifier = Modifier.widthIn(max = 380.dp)
+            )
+        }
+        Row(modifier = Modifier.padding(top = 20.dp)) {
+            Button(
+                onClick = { navController.navigate("screen_menu") },
+                modifier = Modifier
+                    .height(45.dp)
+                    .width(150.dp)
+            ) {
+                Text(text = "Volver al inicio")
+            }
         }
     }
+}
 
     //de aquí abajo nada...
     /*if (AppTheme.orientation == Orientation.Vertical) {
@@ -145,4 +148,4 @@ fun Help(navController: NavHostController){ //Necesitamos este controlador
             }
         }
     }*/
-}
+
