@@ -40,12 +40,9 @@ class MainActivity : ComponentActivity() {
                         PreparationGame( navController)
                     }
                     composable(
-                        "screen_game/{aliasText}/{difficulty}/{timer}",
+                        route ="screen_game/{aliasText}/{timer}",
                         arguments = listOf(
                             navArgument("aliasText"){
-                                type = NavType.StringType
-                            },
-                            navArgument("difficulty"){
                                 type = NavType.StringType
                             },
                             navArgument("timer"){
@@ -57,14 +54,34 @@ class MainActivity : ComponentActivity() {
                         Game(
                             navController,
                             aliasText = backstackEntry.arguments?.getString("aliasText"),
-                            difficulty = backstackEntry.arguments?.getString("difficulty"),
                             time = backstackEntry.arguments?.getBoolean("timer"),
                             viewModel = viewModel
                             )
 
                     }
+
                     composable(
-                        "screen_postgame/{aliasText}/{winner}/{totalTime}",
+                        route ="screen_multigame/{aliasText}/{timer}",
+                        arguments = listOf(
+                            navArgument("aliasText"){
+                                type = NavType.StringType
+                            },
+                            navArgument("timer"){
+                                type = NavType.BoolType
+                            }
+                        )
+                    ){
+                            backstackEntry ->
+                        MultiGame(
+                            navController,
+                            aliasText = backstackEntry.arguments?.getString("aliasText"),
+                            time = backstackEntry.arguments?.getBoolean("timer"),
+                            viewModel = viewModel
+                        )
+
+                    }
+                    composable(
+                        route ="screen_postgame/{aliasText}/{winner}/{totalTime}",
                         arguments = listOf(
                             navArgument("aliasText"){
                                 type = NavType.StringType

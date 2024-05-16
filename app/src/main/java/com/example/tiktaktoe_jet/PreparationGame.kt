@@ -156,8 +156,12 @@ fun PreparationGame(navController: NavHostController) {
                     }
                     Button(
                         onClick = {
-                            if (aliasText.isNotBlank())
-                                navController.navigate("screen_game/$aliasText/$difficulty/$timer")
+                            if (aliasText.isNotBlank()) {
+                                if (difficulty == "individual")
+                                    navController.navigate("screen_game/$aliasText/$timer")
+                                if (difficulty == "multijugador")
+                                    navController.navigate("screen_multigame/$aliasText/$timer")
+                            }
                         }
                     ) {
                         Text(text = stringResource(id = R.string.Start))
@@ -266,8 +270,12 @@ fun PreparationGame(navController: NavHostController) {
                 }
                 Button(
                     onClick = {
-                        if (aliasText.isNotBlank())
-                            navController.navigate("screen_game/$aliasText/$difficulty/$timer")
+                        if (aliasText.isNotBlank()) {
+                            if (difficulty == "individual")
+                                navController.navigate("screen_game/$aliasText/$timer")
+                            if (difficulty == "multijugador")
+                                navController.navigate("screen_multigame/$aliasText/$timer")
+                        }
                     }
                 ) {
                     Text(text = stringResource(id = R.string.Start))
