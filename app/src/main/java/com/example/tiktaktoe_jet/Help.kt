@@ -1,6 +1,7 @@
 package com.example.tiktaktoe_jet
 
 import android.annotation.SuppressLint
+import android.media.Image
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.simonsays_jet.R
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

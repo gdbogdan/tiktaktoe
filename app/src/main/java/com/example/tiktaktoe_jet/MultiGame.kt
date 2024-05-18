@@ -49,6 +49,7 @@ fun MultiGame(
             Image(painter = painterResource(id = R.drawable.juego),modifier = Modifier.size(90.dp), contentDescription = null)
             Text(text = stringResource(id = R.string.Game), fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp), fontWeight = FontWeight.Bold)
 
+
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
