@@ -23,6 +23,7 @@
     <string name="AliasError">Alias vacio, escriba su alias</string>
     <string name="Dificultad">Dificultad</string>
     <string name="Tiempo">Control de tiempo</string>
+    <string name="EmptyAlias">Has de escribir un Alias</string>
     <string name="Start">Empezar partida</string>
 
     <!--Game-->

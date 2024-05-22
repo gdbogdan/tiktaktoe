@@ -5,10 +5,12 @@ import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -117,36 +119,59 @@ fun PostGame(navController: NavHostController, aliasText: String?, winner: Strin
             )
             val subject = "Partida tres en raya"
             val context = LocalContext.current
-            Button(
 
-                onClick = {
-                    val intent = Intent(Intent.ACTION_SEND).apply {
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_EMAIL, emailText)
-                        putExtra(Intent.EXTRA_SUBJECT, subject)
-                        putExtra(Intent.EXTRA_TEXT, logText)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+
+                    onClick = {
+                        val intent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_EMAIL, emailText)
+                            putExtra(Intent.EXTRA_SUBJECT, subject)
+                            putExtra(Intent.EXTRA_TEXT, logText)
+                        }
+                        context.startActivity(intent)
                     }
-                    context.startActivity(intent)
+
+                ) {
+                    Text(text = stringResource(id = R.string.btnEmail))
                 }
-
-            ) {
-                Text(text = stringResource(id = R.string.btnEmail))
             }
-            Button(
-                onClick = { navController.navigate("screen_preparation") }
-
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = stringResource(id = R.string.NewGame))
+                Button(
+                    onClick = { navController.navigate("screen_preparation") }
+
+                ) {
+                    Text(text = stringResource(id = R.string.NewGame))
+                }
             }
             val activity = (LocalContext.current as? Activity)
-            Button(
-                onClick = { activity?.finish() }
-
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = stringResource(id = R.string.Salir))
+                Button(
+                    onClick = { activity?.finish() }
+
+                ) {
+                    Text(text = stringResource(id = R.string.Salir))
+                }
             }
-
-
         }
     }
 

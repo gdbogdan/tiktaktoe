@@ -1,6 +1,7 @@
 package com.example.tiktaktoe_jet
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -28,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,10 +43,9 @@ import com.example.tiktaktoe_jet.ui.theme.AppTheme
 var timer: Boolean = false
 var difficulty: String = ""
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun PreparationGame(navController: NavHostController) {
-
+    val context = LocalContext.current
 
         Box(
             modifier = Modifier
@@ -268,6 +269,7 @@ fun PreparationGame(navController: NavHostController) {
                     )
                     Text(text = stringResource(id = R.string.Menu))
                 }
+
                 Button(
                     onClick = {
                         if (aliasText.isNotBlank()) {
@@ -275,6 +277,9 @@ fun PreparationGame(navController: NavHostController) {
                                 navController.navigate("screen_game/$aliasText/$timer")
                             if (difficulty == "multijugador")
                                 navController.navigate("screen_multigame/$aliasText/$timer")
+                        }
+                        else{
+                            Toast.makeText(context,R.string.AliasError, Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) {
