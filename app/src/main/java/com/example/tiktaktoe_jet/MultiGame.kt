@@ -84,15 +84,7 @@ fun MultiGame(
             BuildRow(rowId = 2, viewModel = viewModel)
             BuildRow(rowId = 3, viewModel = viewModel)
 
-            if(winner != null) {
-                Button(
-                    onClick = {
-                        viewModel.resetBoard()
-                        navController.navigate("screen_postgame/$aliasText/$winner/$totalTime")
-                    }) {
-                    Text(text = stringResource(id = R.string.End))
-                }
-            }
+
         }
 
 

@@ -22,6 +22,10 @@ import androidx.compose.ui.unit.sp
 import com.example.simonsays_jet.R
 import kotlin.random.Random
 
+
+var isTie = false
+var winner: String? = null
+var totalTime = 0
 @Composable
 fun Game(
     navController: NavHostController, aliasText: String?, time: Boolean?, viewModel: GameViewModel = GameViewModel()
@@ -63,15 +67,15 @@ fun Game(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val winner = state.victory
             val winnerMessage = "$winner Ganó"
-            val totalTime = "0"
+            if (winner !== null){
             Text(
-                text = if (winner !== null) winnerMessage else turnMessage,
+                text =  winnerMessage,
                 textAlign = TextAlign.Center,
                 fontSize = 40.sp,
                 modifier = Modifier.padding(10.dp)
             )
+            }
         }
         Board(
             boardState = boardState,
@@ -88,7 +92,7 @@ fun Game(
             }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        if(winner != null || /*boardState.is a Tie*/ ) {
+        if(winner != null) {
             Button(
                 onClick = {
                     viewModel.resetBoard()
@@ -133,6 +137,7 @@ fun isGameOver(boardState: Array<Array<String>>): Boolean {
     // Check rows and columns for a winner
     for (i in 0..2) {
         if (boardState[i][0] != "" && boardState[i][0] == boardState[i][1] && boardState[i][1] == boardState[i][2]) {
+            winner = boardState[i][0]
             return true
         }
         if (boardState[0][i] != "" && boardState[0][i] == boardState[1][i] && boardState[1][i] == boardState[2][i]) {
@@ -149,7 +154,7 @@ fun isGameOver(boardState: Array<Array<String>>): Boolean {
     }
 
     // Check for a tie
-    var isTie = true
+    isTie = true
     for (row in boardState) {
         for (cell in row) {
             if (cell == "") {
@@ -157,7 +162,7 @@ fun isGameOver(boardState: Array<Array<String>>): Boolean {
             }
         }
     }
-
+    winner = "isTie"
     return isTie
 }
 
