@@ -1,93 +1,129 @@
 package com.example.tiktaktoe_jet
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
-import java.lang.Math.random
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import kotlin.random.Random
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
+class GameViewModel : ViewModel() {
+    private val _seconds = MutableStateFlow(0)
+    val seconds: StateFlow<Int> get() = _seconds
 
-class GameViewModel: ViewModel(){
-    private val _state = mutableStateOf(GameState())
-    val state: State<GameState> = _state
+    init {
+        startTimer()
+    }
 
-    fun setButton(id: Int) {
-        if(_state.value.victory == null) {
-            if (_state.value.buttonValues[id].equals("-")) {
-                val buttons = _state.value.buttonValues.copyOf()
-                if (_state.value.isXTurn) {
-                    buttons[id] = "X"
-                } else {
-                    buttons[id] = "O"
-                    random()
-                }
-                _state.value = _state.value.copy(
-                    buttonValues = buttons,
-                    isXTurn = !_state.value.isXTurn
-                )
+    private fun startTimer() {
+        viewModelScope.launch {
+            while (true) {
+                delay(1000L)  // Espera 1 segundo
+                _seconds.value += 1
             }
         }
-        isGameOver()
     }
+    var boardState by mutableStateOf(Array(3) { Array(3) { "" } })
+        private set
 
-    private fun isGameOver(): Boolean {
-        if(rowHasWinner(1) || rowHasWinner(2) || rowHasWinner(3)){
-            return true
-        }else if (columnHasWinner(1) || columnHasWinner(2) || columnHasWinner(3)){
-            return true
-        }else if(firstDiagonalHasWinner() || secondDiagonalHasWinner()){
-            return true
-        }
-        return false
-    }
+    private val difficulty = getDificulty()
+    var currentPlayer by mutableStateOf("X")
+        private set
 
-    private fun rowHasWinner(rowId: Int): Boolean{
-        val third = (rowId * 3) - 1
-        val second = third - 1
-        val first = second - 1
-        return compareSpaces(first,second,third)
-    }
+    var gameOver by mutableStateOf(false)
+        private set
 
-    private fun columnHasWinner(columnId: Int): Boolean{
-        val first = columnId -1
-        val second = first + 3
-        val third = first + 6
-        return compareSpaces(first,second,third)
-    }
+    var winner by mutableStateOf<String?>(null)
+        private set
 
-    private fun firstDiagonalHasWinner(): Boolean{
-        return compareSpaces(0,4,8)
-    }
+    fun onCellClick(row: Int, col: Int) {
+        if (!gameOver && boardState[row][col] == "") {
+            boardState = boardState.copyOf().apply {
+                this[row][col] = currentPlayer
+            }
+            if(difficulty == "individual") {
+                currentPlayer = if (currentPlayer == "X") "O" else "X"
+                gameOver = isGameOver(boardState)
+                if (!gameOver) {
+                    val computerMove = getComputerMove(boardState)
+                    boardState = boardState.copyOf().apply {
+                        this[computerMove.first][computerMove.second] = "O"
+                    }
+                    gameOver = isGameOver(boardState)
+                }
+            }else{
+                currentPlayer = "X"
+                gameOver = isGameOver(boardState)
+            }
 
-    private fun secondDiagonalHasWinner(): Boolean{
-        return compareSpaces(2,4,6)
-    }
-
-
-    private fun compareSpaces(first: Int, second: Int, third: Int): Boolean{
-        val firstTwoMatch = _state.value.buttonValues[first] == _state.value.buttonValues[second]
-        val secondTwoMatch = _state.value.buttonValues[second] == _state.value.buttonValues[third]
-        val allThreeMatch = firstTwoMatch && secondTwoMatch
-        return if(_state.value.buttonValues[first] == "-"){
-            false
-        }else if(allThreeMatch){
-            _state.value = _state.value.copy(victory = _state.value.buttonValues[first])
-            val buttonWinners = _state.value.buttonWinners.copyOf()
-            buttonWinners[first] = true
-            buttonWinners[second] = true
-            buttonWinners[third] = true
-            _state.value = _state.value.copy(buttonWinners = buttonWinners)
-            true
-        }else{
-            false
         }
     }
 
+    fun resetBoard() {
+        boardState = Array(3) { Array(3) { "" } }
+        currentPlayer = "X"
+        gameOver = false
+        winner = null
+    }
 
+    private fun isGameOver(boardState: Array<Array<String>>): Boolean {
+        // Check rows and columns for a winner
+        for (i in 0..2) {
+            if (boardState[i][0] != "" && boardState[i][0] == boardState[i][1] && boardState[i][1] == boardState[i][2]) {
+                winner = boardState[i][0]
+                return true
+            }
+            if (boardState[0][i] != "" && boardState[0][i] == boardState[1][i] && boardState[1][i] == boardState[2][i]) {
+                winner = boardState[0][i]
+                return true
+            }
+        }
 
+        // Check diagonals for a winner
+        if (boardState[0][0] != "" && boardState[0][0] == boardState[1][1] && boardState[1][1] == boardState[2][2]) {
+            winner = boardState[0][0]
+            return true
+        }
+        if (boardState[2][0] != "" && boardState[2][0] == boardState[1][1] && boardState[1][1] == boardState[0][2]) {
+            winner = boardState[2][0]
+            return true
+        }
 
+        // Check for a tie
+        var isTie = true
+        for (row in boardState) {
+            for (cell in row) {
+                if (cell == "") {
+                    isTie = false
+                }
+            }
+        }
+        winner = if (isTie) "Tie" else null
+        return isTie
+    }
 
-    fun resetBoard(){
-        _state.value = GameState()
+    private fun getComputerMove(boardState: Array<Array<String>>): Pair<Int, Int> {
+        // Get a list of empty cells
+        val emptyCells = mutableListOf<Pair<Int, Int>>()
+        for (i in 0..2) {
+            for (j in 0..2) {
+                if (boardState[i][j] == "") {
+                    emptyCells.add(Pair(i, j))
+                }
+            }
+        }
+
+        // If there are no empty cells, the game is over
+        if (emptyCells.isEmpty()) {
+            return Pair(-1, -1)
+        }
+
+        // Choose a random empty cell
+        val randomIndex = Random.nextInt(emptyCells.size)
+        return emptyCells[randomIndex]
     }
 }
-

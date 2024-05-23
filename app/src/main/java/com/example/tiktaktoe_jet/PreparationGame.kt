@@ -1,6 +1,5 @@
 package com.example.tiktaktoe_jet
 
-import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,7 +40,7 @@ import com.example.simonsays_jet.R
 import com.example.tiktaktoe_jet.ui.theme.AppTheme
 
 var timer: Boolean = false
-var difficulty: String = ""
+private var difficulty: String = ""
 
 @Composable
 fun PreparationGame(navController: NavHostController) {
@@ -335,4 +334,9 @@ fun SwitchFun(){
         }
     )
     timer = isChecked
+}
+
+fun getDificulty(): String {
+    return difficulty
+
 }
