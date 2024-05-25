@@ -33,46 +33,46 @@ import com.example.simonsays_jet.R
 fun Menu(navController: NavHostController
 ) {
 
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .background(colorResource(id = R.color.purple_200)))
-        Row (
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(top = 10.dp)
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(colorResource(id = R.color.purple_200)))
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(top = 10.dp)
 
-        ){
-            Image(painter = painterResource(id = R.drawable.tiktak), modifier = Modifier.size(150.dp), contentDescription = null)
-            Text(text = stringResource(id = R.string.TikTakToe), fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp), fontWeight = FontWeight.Bold)
+    ){
+        Image(painter = painterResource(id = R.drawable.tiktak), modifier = Modifier.size(150.dp), contentDescription = null)
+        Text(text = stringResource(id = R.string.TikTakToe), fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp), fontWeight = FontWeight.Bold)
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+
+        Button(
+            onClick = {
+                navController.navigate("screen_help")
+            },
+            modifier = Modifier.padding(bottom = 60.dp)
+        ) {
+            Text(text =  stringResource(id = R.string.Ayuda))
         }
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        Button(
+            onClick = { navController.navigate("screen_preparation") },
+            modifier = Modifier.padding(bottom = 60.dp)
+        ) {
+            Text(text =  stringResource(id = R.string.Partida))
+        }
+        val activity = (LocalContext.current as? Activity)
+        Button(
+            onClick = { activity?.finish() }
 
-            Button(
-                onClick = {
-                    navController.navigate("screen_help")
-                },
-                modifier = Modifier.padding(bottom = 60.dp)
-            ) {
-                Text(text =  stringResource(id = R.string.Ayuda))
-            }
-            Button(
-                onClick = { navController.navigate("screen_preparation") },
-                modifier = Modifier.padding(bottom = 60.dp)
-            ) {
-                Text(text =  stringResource(id = R.string.Partida))
-            }
-            val activity = (LocalContext.current as? Activity)
-            Button(
-                onClick = { activity?.finish() }
-
-            ) {
-                Text(text = stringResource(id = R.string.Salir))
-            }
+        ) {
+            Text(text = stringResource(id = R.string.Salir))
         }
     }
+}
 
 

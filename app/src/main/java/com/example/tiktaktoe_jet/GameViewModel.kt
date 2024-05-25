@@ -4,106 +4,136 @@ import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import kotlin.random.Random
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.asStateFlow
 
-class GameViewModel : ViewModel() {
-    private val _seconds = MutableStateFlow(0)
+class GameViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
+    private var _seconds = MutableStateFlow(0)
     val seconds: StateFlow<Int> get() = _seconds
+    private var timerJob: Job? = null
 
     init {
         startTimer()
+        savedStateHandle.get<Array<Array<String>>>("boardState")?.let {
+            _boardState.value = it
+        }
+        savedStateHandle.get<String>("dificulty")?.let {
+            _dificulty.value = it
+        }
+        savedStateHandle.get<String>("winner")?.let {
+            _winner.value = it
+        }
     }
 
     private fun startTimer() {
-        viewModelScope.launch {
+        timerJob = viewModelScope.launch {
             while (true) {
                 delay(1000L)  // Espera 1 segundo
                 _seconds.value += 1
+                savedStateHandle["seconds"] = _seconds.value
             }
         }
     }
-    var boardState by mutableStateOf(Array(3) { Array(3) { "" } })
-        private set
+    private fun stopTimer() {
+        timerJob?.cancel()
+    }
+    private var _boardState = MutableStateFlow(Array(3) { Array(3) { "" } })
+    val boardState: StateFlow<Array<Array<String>>> get() = _boardState
 
-    private val difficulty = getDificulty()
-    var currentPlayer by mutableStateOf("X")
-        private set
+    private val _dificulty = MutableStateFlow("individual")
+    val dificulty: StateFlow<String> get() = _dificulty
 
-    var gameOver by mutableStateOf(false)
-        private set
+    fun setDifficulty(value: String) {
+        viewModelScope.launch {
+            _dificulty.value = value
+            savedStateHandle["dificulty"] = _dificulty.value
+        }
+    }
+    private var currentPlayer ="X"
 
-    var winner by mutableStateOf<String?>(null)
-        private set
+
+
+    private val _winner = MutableStateFlow<String?>(null)
+    val winner: StateFlow<String?> get() = _winner
 
     fun onCellClick(row: Int, col: Int) {
-        if (!gameOver && boardState[row][col] == "") {
-            boardState = boardState.copyOf().apply {
-                this[row][col] = currentPlayer
-            }
-            if(difficulty == "individual") {
-                currentPlayer = if (currentPlayer == "X") "O" else "X"
-                gameOver = isGameOver(boardState)
-                if (!gameOver) {
-                    val computerMove = getComputerMove(boardState)
-                    boardState = boardState.copyOf().apply {
-                        this[computerMove.first][computerMove.second] = "O"
-                    }
-                    gameOver = isGameOver(boardState)
-                }
-            }else{
-                currentPlayer = "X"
-                gameOver = isGameOver(boardState)
-            }
+        if (_winner.value != null || _boardState.value[row][col].isNotEmpty()) return
 
+        val newBoardState = _boardState.value.map { it.copyOf() }.toTypedArray()
+        newBoardState[row][col] = currentPlayer  // Current player move
+
+        if (dificulty.value == "individual") {
+            if (isGameOver(newBoardState)) {
+                _winner.value = currentPlayer
+                savedStateHandle["winner"] = currentPlayer
+                stopTimer()
+            } else {
+                val computerMove = getComputerMove(newBoardState)
+                newBoardState[computerMove.first][computerMove.second] = "O"
+                if (isGameOver(newBoardState)) {
+                    _winner.value = "O"
+                    savedStateHandle["winner"] = "O"
+                    stopTimer()
+                }
+            }
+        } else {
+            if (isGameOver(newBoardState)) {
+                _winner.value = currentPlayer
+                savedStateHandle["winner"] = newBoardState[row][col]
+                stopTimer()
+            }
+            else {
+                currentPlayer = if (currentPlayer == "X") "O" else "X" // Cambiar jugador
+            }
         }
+
+        _boardState.value = newBoardState
+        savedStateHandle["boardState"] = newBoardState
     }
 
     fun resetBoard() {
-        boardState = Array(3) { Array(3) { "" } }
+        _boardState.value = Array(3) { Array(3) { "" } }
+        savedStateHandle["boardState"] = _boardState.value
         currentPlayer = "X"
-        gameOver = false
-        winner = null
+        _winner.value = null
+        savedStateHandle["winner"] = null
+        _seconds = MutableStateFlow(0)
+        startTimer()
     }
 
     private fun isGameOver(boardState: Array<Array<String>>): Boolean {
         // Check rows and columns for a winner
         for (i in 0..2) {
             if (boardState[i][0] != "" && boardState[i][0] == boardState[i][1] && boardState[i][1] == boardState[i][2]) {
-                winner = boardState[i][0]
                 return true
             }
             if (boardState[0][i] != "" && boardState[0][i] == boardState[1][i] && boardState[1][i] == boardState[2][i]) {
-                winner = boardState[0][i]
                 return true
             }
         }
 
         // Check diagonals for a winner
         if (boardState[0][0] != "" && boardState[0][0] == boardState[1][1] && boardState[1][1] == boardState[2][2]) {
-            winner = boardState[0][0]
             return true
         }
         if (boardState[2][0] != "" && boardState[2][0] == boardState[1][1] && boardState[1][1] == boardState[0][2]) {
-            winner = boardState[2][0]
             return true
         }
 
         // Check for a tie
-        var isTie = true
-        for (row in boardState) {
-            for (cell in row) {
-                if (cell == "") {
-                    isTie = false
-                }
-            }
+        if (boardState.all { row -> row.all { it.isNotEmpty() } }) {
+            _winner.value = "Tie"
+            savedStateHandle["winner"] = "Tie"
+            return true
         }
-        winner = if (isTie) "Tie" else null
-        return isTie
+        return false
     }
 
     private fun getComputerMove(boardState: Array<Array<String>>): Pair<Int, Int> {

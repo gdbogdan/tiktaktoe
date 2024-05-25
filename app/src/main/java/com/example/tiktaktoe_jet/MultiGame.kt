@@ -18,12 +18,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.simonsays_jet.R
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 @Composable
 fun MultiGame(
-    navController: NavHostController, aliasText: String?, time: Boolean?, viewModel: GameViewModel = GameViewModel()
-){
+    navController: NavHostController,
+    aliasText: String?,
+    time: Boolean?,
+    viewModelFactory: ViewModelProvider.Factory)
+{
+    val viewModel = viewModel<GameViewModel>(factory = viewModelFactory)
+    val boardState by viewModel.boardState.collectAsState()
+    val winner by viewModel.winner.collectAsState()
     val seconds by viewModel.seconds.collectAsState()
-        Box(modifier = Modifier
+    Box(modifier = Modifier
         .fillMaxSize()
         .background(colorResource(id = R.color.purple_200))
     ) {
@@ -35,7 +45,7 @@ fun MultiGame(
                 modifier = Modifier.padding(bottom = 30.dp)
             ){
                 Image(painter = painterResource(id = R.drawable.juego),modifier = Modifier.size(90.dp), contentDescription = null)
-                Text(text = stringResource(id = R.string.Game), fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp), fontWeight = FontWeight.Bold)
+                Text(text = stringResource(id = R.string.MultiGame), fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp), fontWeight = FontWeight.Bold)
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -54,11 +64,11 @@ fun MultiGame(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val winnerMessage: String = if(viewModel.winner == "isTie"){
+                val winnerMessage: String = if(viewModel.winner.toString() == "isTie"){
                     "Empate"
                 }else
-                    "${viewModel.winner} Ganó"
-                if (viewModel.winner != null){
+                    "$winner Ganó"
+                if (winner != null){
                     Text(
                         text =  winnerMessage,
                         textAlign = TextAlign.Center,
@@ -68,22 +78,21 @@ fun MultiGame(
                 }
 
                 Board(
-                    boardState = viewModel.boardState,
+                    boardState = boardState,
                     onCellClick = { row, col ->
-                        viewModel.onCellClick(row, col)
-                    }
-                )
+                    viewModel.onCellClick(row, col)
+                })
                 val totalTime: String = if(time == false){
                    "0"
                }else{
                    seconds.toString()
                }
                 Spacer(modifier = Modifier.height(16.dp))
-                if(viewModel.winner != null) {
+                if(winner != null) {
                     Button(
                         onClick = {
                             viewModel.resetBoard()
-                            navController.navigate("screen_postgame/$aliasText/${viewModel.winner}/$totalTime")
+                            navController.navigate("screen_postgame/$aliasText/$winner/$totalTime")
                         }) {
                         Text(text = stringResource(id = R.string.End))
                     }
@@ -92,8 +101,3 @@ fun MultiGame(
         }
     }
 }
-
-
-
-
-

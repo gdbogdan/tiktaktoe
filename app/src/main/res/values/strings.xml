@@ -31,6 +31,9 @@
     <string name="Score">Score</string>
     <string name="Timer">Time:</string>
     <string name="End">Finalizar partida</string>
+
+    <!--MultiGame-->
+    <string name="MultiGame">Partida multijugador</string>
     <!--Result-->
     <string name="Res">Resultados</string>
     <string name="Data">Día y hora</string>

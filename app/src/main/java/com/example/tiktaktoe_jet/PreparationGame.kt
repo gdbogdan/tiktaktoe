@@ -35,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.simonsays_jet.R
 import com.example.tiktaktoe_jet.ui.theme.AppTheme
@@ -43,14 +44,13 @@ var timer: Boolean = false
 private var difficulty: String = ""
 
 @Composable
-fun PreparationGame(navController: NavHostController) {
+fun PreparationGame(navController: NavHostController, viewModel: GameViewModel = viewModel()) {
     val context = LocalContext.current
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colorResource(id = R.color.purple_200))
-        )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.purple_200))
+    )
     if (AppTheme.orientation == Orientation.Vertical) {
         Column(
             modifier = Modifier.padding(top = 10.dp)
@@ -157,6 +157,7 @@ fun PreparationGame(navController: NavHostController) {
                     Button(
                         onClick = {
                             if (aliasText.isNotBlank()) {
+                                viewModel.setDifficulty(difficulty)
                                 if (difficulty == "individual")
                                     navController.navigate("screen_game/$aliasText/$timer")
                                 if (difficulty == "multijugador")
@@ -272,10 +273,11 @@ fun PreparationGame(navController: NavHostController) {
                 Button(
                     onClick = {
                         if (aliasText.isNotBlank()) {
+                            viewModel.setDifficulty(difficulty)
                             if (difficulty == "individual")
-                                navController.navigate("screen_game/$aliasText/$timer")
+                                navController.navigate("screen_game/$aliasText/$difficulty/$timer")
                             if (difficulty == "multijugador")
-                                navController.navigate("screen_multigame/$aliasText/$timer")
+                                navController.navigate("screen_multigame/$aliasText/$difficulty/$timer")
                         }
                         else{
                             Toast.makeText(context,R.string.AliasError, Toast.LENGTH_SHORT).show()
@@ -334,9 +336,4 @@ fun SwitchFun(){
         }
     )
     timer = isChecked
-}
-
-fun getDificulty(): String {
-    return difficulty
-
 }

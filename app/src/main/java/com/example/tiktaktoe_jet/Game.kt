@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.Color
@@ -22,12 +21,21 @@ import androidx.navigation.NavHostController
 import com.example.simonsays_jet.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModelProvider
 
 @Composable
 fun Game(
-    navController: NavHostController, aliasText: String?, time: Boolean?, viewModel: GameViewModel = viewModel()
-){
+    navController: NavHostController,
+    aliasText: String?,
+    time: Boolean?,
+    viewModelFactory: ViewModelProvider.Factory)
+{
+    val viewModel = viewModel<GameViewModel>(factory = viewModelFactory)
+    val boardState by viewModel.boardState.collectAsState()
+    val winner by viewModel.winner.collectAsState()
     val seconds by viewModel.seconds.collectAsState()
+
     Box(modifier = Modifier
         .fillMaxSize()
         .background(colorResource(id = R.color.purple_200))
@@ -39,8 +47,13 @@ fun Game(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(bottom = 30.dp)
             ){
-                Image(painter = painterResource(id = R.drawable.juego),modifier = Modifier.size(90.dp), contentDescription = null)
-                Text(text = stringResource(id = R.string.Game), fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp), fontWeight = FontWeight.Bold)
+                Image(
+                    painter = painterResource(id = R.drawable.juego),
+                    modifier = Modifier.size(90.dp), contentDescription = null)
+                Text(
+                    text = stringResource(id = R.string.Game),
+                    fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp),
+                    fontWeight = FontWeight.Bold)
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -50,8 +63,13 @@ fun Game(
                     .padding(start = 10.dp)
             ){
                 if(time == true) {
-                    Text(text = stringResource(id = R.string.Timer), fontWeight = FontWeight.Bold, fontSize = 25.sp)
-                    Text(text = "$seconds", fontSize = 25.sp)
+                    Text(
+                        text = stringResource(id = R.string.Timer),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp)
+                    Text(
+                        text = "$seconds",
+                        fontSize = 25.sp)
                 }
             }
             Column (
@@ -59,11 +77,11 @@ fun Game(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val winnerMessage: String = if(viewModel.winner == "isTie"){
+                val winnerMessage: String = if(viewModel.winner.toString() == "isTie"){
                     "Empate"
                 }else
-                    "${viewModel.winner} Ganó"
-                if (viewModel.winner != null){
+                    "$winner Ganó"
+                if (winner != null){
                     Text(
                         text =  winnerMessage,
                         textAlign = TextAlign.Center,
@@ -73,22 +91,21 @@ fun Game(
                 }
 
                 Board(
-                    boardState = viewModel.boardState,
+                    boardState = boardState,
                     onCellClick = { row, col ->
-                        viewModel.onCellClick(row, col)
-                    }
-                )
+                    viewModel.onCellClick(row, col)
+                })
                 val totalTime: String = if(time == false){
                     "0"
                 }else{
                     seconds.toString()
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                if(viewModel.winner != null) {
+                if(winner != null) {
                     Button(
                         onClick = {
                             viewModel.resetBoard()
-                            navController.navigate("screen_postgame/$aliasText/${viewModel.winner}/$totalTime")
+                            navController.navigate("screen_postgame/$aliasText/$winner/$totalTime")
                         }) {
                         Text(text = stringResource(id = R.string.End))
                     }
