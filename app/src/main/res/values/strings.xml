@@ -7,12 +7,8 @@
     <string name="Salir">Salir de la aplicación</string>
 
     <!--Help-->
-    <string name="Reglas">El tres en línea, también conocido como ceros y cruces, tres en raya (España, México, Ecuador y Bolivia), cerito cruz (en Cuba), michi (en Perú),
-        triqui (en Colombia), cuadritos, juego del gato, gato (en Chile, Costa Rica y México), tatetí (en Argentina, Paraguay y Uruguay), totito (en Guatemala),
-        triqui traka, equis cero (en Honduras), o la vieja (en Venezuela).
-
-        \n\nEs un juego de lápiz y papel entre dos jugadores: O y X, que marcan los espacios de un tablero de 3×3 alternadamente. Con el objetivo de marcan 3 ceros o 3 x
-        consecutivos en una linea (horizontalmente, verticalmente o diagonalmente).
+    <string name="Reglas">El juego presenta un tablero de 3x3 celdas, donde el objetivo principal es intentar colocar 3 fichas (Os o Xs) en la misma
+        línea (horizontal, vertical y horzontal).
     </string>
     <string name="Menu">Volver al menú principal</string>
 
