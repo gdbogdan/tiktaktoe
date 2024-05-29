@@ -8,7 +8,7 @@
 
     <!--Help-->
     <string name="Reglas">El juego presenta un tablero de 3x3 celdas, donde el objetivo principal es intentar colocar 3 fichas (Os o Xs) en la misma
-        línea (horizontal, vertical y horzontal).
+        línea (horizontal, vertical u horizontal).
     </string>
     <string name="Menu">Volver al menú principal</string>
 
