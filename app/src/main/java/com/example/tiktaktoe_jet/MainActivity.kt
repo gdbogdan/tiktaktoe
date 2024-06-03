@@ -32,6 +32,11 @@ class MainActivity : ComponentActivity() {
                     ){
                         Help(navController)
                     }
+                    composable(
+                        route = "screen_all_results"
+                    ){
+                        Resultados_Partidas(navController)
+                    }
 
                     composable(
                         route = "screen_preparation"

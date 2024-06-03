@@ -27,7 +27,7 @@ import com.example.simonsays_jet.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Help(navController: NavHostController) { //Necesitamos este controlador
+fun Resultados_Partidas(navController: NavHostController) { //Necesitamos este controlador
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,13 +38,8 @@ fun Help(navController: NavHostController) { //Necesitamos este controlador
             modifier = Modifier.padding(bottom = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement =Arrangement.Start ){
-
-            Image(
-                painter = painterResource(id = R.drawable.question_mark),
-                contentDescription = null
-            )
             Text(
-                text = stringResource(id = R.string.Ayuda),
+                text = stringResource(id = R.string.Partidas_Anteriores),
                 fontSize = 24.sp,
                 modifier = Modifier.padding(start = 10.dp),
                 fontWeight = FontWeight.Bold
@@ -54,7 +49,7 @@ fun Help(navController: NavHostController) { //Necesitamos este controlador
 
         Row(modifier = Modifier.padding(start = 10.dp).padding(end = 10.dp).padding(bottom = 10.dp)) {
             Text(
-                text = stringResource(id = R.string.Reglas),
+                text = stringResource(id = R.string.Resultado_Partidas),
                 fontSize = 18.sp,
                 textAlign = TextAlign.Justify
             )

@@ -96,8 +96,6 @@ fun PreparationGame(navController: NavHostController, viewModel: GameViewModel =
                             )
                         }
                     }
-
-
                 )
                 Row(
                     modifier = Modifier.padding(top = 10.dp),
@@ -134,7 +132,6 @@ fun PreparationGame(navController: NavHostController, viewModel: GameViewModel =
                             .padding(end = 20.dp)
                     )
                     SwitchFun()
-
                 }
                 Row(
                     modifier = Modifier
@@ -174,8 +171,6 @@ fun PreparationGame(navController: NavHostController, viewModel: GameViewModel =
                 }
             }
         }
-
-
     }
 }
 @Composable

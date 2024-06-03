@@ -4,6 +4,7 @@
     <string name="TikTakToe">Tik Tak Toe</string>
     <string name="Ayuda"> Ayuda</string>
     <string name="Partida">Comenzar partida</string>
+    <string name="Consultar_partidas">Consultar partidas</string>
     <string name="Salir">Salir de la aplicación</string>
 
     <!--Help-->
@@ -38,6 +39,10 @@
     <string name="email">E-mail destinatario</string>
     <string name="btnEmail">Enviar email</string>
     <string name="NewGame">Nueva partida</string>
+
+    <!--Resultados_partidas-->
+    <string name="Partidas_Anteriores">Partidas anteriores</string>
+    <string name="Resultado_Partidas">Estás en la pantalla de resultados anteriores</string>
 
 
 </resources>
