@@ -34,7 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import com.example.simonsays_jet.R
 
@@ -42,7 +42,7 @@ var timer: Boolean = false
 private var difficulty: String = ""
 
 @Composable
-fun PreparationGame(navController: NavHostController, viewModel: GameViewModel = viewModel()) {
+fun PreparationGame(navController: NavHostController) {
     val scrollState = rememberScrollState()
     Box(
         modifier = Modifier
@@ -142,7 +142,7 @@ fun PreparationGame(navController: NavHostController, viewModel: GameViewModel =
                     Button(
                         onClick = {
                             if (aliasText.isNotBlank()) {
-                                viewModel.setDifficulty(difficulty)
+
                                 if (difficulty == "individual")
                                     navController.navigate("screen_game/$aliasText/$timer")
                                 if (difficulty == "multijugador")

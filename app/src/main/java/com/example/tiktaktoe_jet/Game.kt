@@ -21,7 +21,6 @@ import androidx.navigation.NavHostController
 import com.example.simonsays_jet.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModelProvider
 
 @Composable
@@ -36,11 +35,11 @@ fun Game(
     val winner by viewModel.winner.collectAsState()
     val seconds by viewModel.seconds.collectAsState()
 
-   Column(
-       modifier = Modifier
-           .fillMaxSize()
-           .background(colorResource(id = R.color.purple_200))
-   ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.purple_200))
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 30.dp)
@@ -53,24 +52,24 @@ fun Game(
                 fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp),
                 fontWeight = FontWeight.Bold)
         }
-       if(time == true){
-           Row(
-               verticalAlignment = Alignment.CenterVertically,
-               horizontalArrangement = Arrangement.SpaceEvenly,
-               modifier = Modifier
-                   .padding(bottom = 5.dp)
-                   .padding(start = 5.dp)
-           ){
-               Text(
-                   text = stringResource(id = R.string.Timer),
-                   fontWeight = FontWeight.Bold,
-                   fontSize = 25.sp)
-               Text(
-                   text = "$seconds",
-                   fontSize = 25.sp)
+        if(time == true){
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .padding(bottom = 5.dp)
+                    .padding(start = 5.dp)
+            ){
+                Text(
+                    text = stringResource(id = R.string.Timer),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 25.sp)
+                Text(
+                    text = "$seconds",
+                    fontSize = 25.sp)
 
-           }
-       }
+            }
+        }
 
         Column (
             modifier = Modifier.fillMaxSize(),
@@ -92,8 +91,8 @@ fun Game(
             Board(
                 boardState = boardState,
                 onCellClick = { row, col ->
-                viewModel.onCellClick(row, col)
-            })
+                    viewModel.onCellClick(row, col)
+                })
             val totalTime: String = if(time == false){
                 "0"
             }else{
@@ -110,12 +109,12 @@ fun Game(
                 }
             }
         }
-   }
+    }
 }
 
 @Composable
 fun Board(boardState: Array<Array<String>>, onCellClick: (Int, Int) -> Unit) {
-    Column (){
+    Column {
         for (row in 0..2) {
             Row {
                 for (col in 0..2) {
@@ -142,4 +141,3 @@ fun Cell(value: String, onClick: () -> Unit) {
         Text(text = value, fontSize = 32.sp)
     }
 }
-
