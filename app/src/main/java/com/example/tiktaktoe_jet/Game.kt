@@ -134,7 +134,7 @@ fun Cell(value: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(64.dp)
-            .border(2.dp, Color.Black) // Añadir el borde aquí
+            .border(2.dp, Color.Black)
             .background(Color.White)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center

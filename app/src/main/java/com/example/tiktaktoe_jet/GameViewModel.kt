@@ -1,35 +1,34 @@
 package com.example.tiktaktoe_jet
 
 import androidx.lifecycle.ViewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
-import kotlin.random.Random
 import androidx.lifecycle.viewModelScope
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.PreferencesRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.asStateFlow
+import kotlin.random.Random
 
-class GameViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
-    private var _seconds = MutableStateFlow(0)
+class GameViewModel(private val repository: PreferencesRepository) : ViewModel() {
+    private var _seconds = MutableStateFlow(repository.getSeconds())
     val seconds: StateFlow<Int> get() = _seconds
     private var timerJob: Job? = null
 
+    private var _boardState = MutableStateFlow(Array(3) { Array(3) { "" } })
+    val boardState: StateFlow<Array<Array<String>>> get() = _boardState
+
+    private val _dificulty = MutableStateFlow(repository.getDifficulty())
+    val dificulty: StateFlow<String> get() = _dificulty
+
+    private val _winner = MutableStateFlow(repository.getWinner())
+    val winner: StateFlow<String?> get() = _winner
+
+    private var currentPlayer = "X"
+
     init {
         startTimer()
-        savedStateHandle.get<Array<Array<String>>>("boardState")?.let {
-            _boardState.value = it
-        }
-        savedStateHandle.get<String>("dificulty")?.let {
-            _dificulty.value = it
-        }
-        savedStateHandle.get<String>("winner")?.let {
-            _winner.value = it
-        }
+        _boardState.value = repository.getBoardState()
     }
 
     private fun startTimer() {
@@ -37,31 +36,24 @@ class GameViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
             while (true) {
                 delay(1000L)  // Espera 1 segundo
                 _seconds.value += 1
-                savedStateHandle["seconds"] = _seconds.value
+                repository.saveSeconds(_seconds.value)
             }
         }
     }
+
     private fun stopTimer() {
         timerJob?.cancel()
     }
-    private var _boardState = MutableStateFlow(Array(3) { Array(3) { "" } })
-    val boardState: StateFlow<Array<Array<String>>> get() = _boardState
 
-    private val _dificulty = MutableStateFlow("individual")
-    val dificulty: StateFlow<String> get() = _dificulty
 
     fun setDifficulty(value: String) {
         viewModelScope.launch {
             _dificulty.value = value
-            savedStateHandle["dificulty"] = _dificulty.value
+            repository.saveDifficulty(_dificulty.value)
         }
     }
-    private var currentPlayer ="X"
 
 
-
-    private val _winner = MutableStateFlow<String?>(null)
-    val winner: StateFlow<String?> get() = _winner
 
     fun onCellClick(row: Int, col: Int) {
         if (_winner.value != null || _boardState.value[row][col].isNotEmpty()) return
@@ -72,38 +64,37 @@ class GameViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         if (dificulty.value == "individual") {
             if (isGameOver(newBoardState)) {
                 _winner.value = currentPlayer
-                savedStateHandle["winner"] = currentPlayer
+                repository.saveWinner(currentPlayer)
                 stopTimer()
             } else {
                 val computerMove = getComputerMove(newBoardState)
                 newBoardState[computerMove.first][computerMove.second] = "O"
                 if (isGameOver(newBoardState)) {
                     _winner.value = "O"
-                    savedStateHandle["winner"] = "O"
+                    repository.saveWinner("O")
                     stopTimer()
                 }
             }
         } else {
             if (isGameOver(newBoardState)) {
                 _winner.value = currentPlayer
-                savedStateHandle["winner"] = newBoardState[row][col]
+                repository.saveWinner(newBoardState[row][col])
                 stopTimer()
-            }
-            else {
+            } else {
                 currentPlayer = if (currentPlayer == "X") "O" else "X" // Cambiar jugador
             }
         }
 
         _boardState.value = newBoardState
-        savedStateHandle["boardState"] = newBoardState
+        repository.saveBoardState(newBoardState)
     }
 
     fun resetBoard() {
         _boardState.value = Array(3) { Array(3) { "" } }
-        savedStateHandle["boardState"] = _boardState.value
+        repository.saveBoardState(_boardState.value)
         currentPlayer = "X"
         _winner.value = null
-        savedStateHandle["winner"] = null
+        repository.saveWinner(null)
         _seconds = MutableStateFlow(0)
         startTimer()
     }
@@ -130,7 +121,7 @@ class GameViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         // Check for a tie
         if (boardState.all { row -> row.all { it.isNotEmpty() } }) {
             _winner.value = "Tie"
-            savedStateHandle["winner"] = "Tie"
+            repository.saveWinner("Tie")
             return true
         }
         return false

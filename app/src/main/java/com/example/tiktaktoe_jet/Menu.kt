@@ -81,7 +81,7 @@ fun Menu(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = { navController.navigate("screen_game/$algo/$algo2") },
+                    onClick = { navController.navigate("screen_gameScreen") },
                     modifier = Modifier.padding(bottom = 5.dp)
                 ) {
                     Text(text = stringResource(id = R.string.Start))

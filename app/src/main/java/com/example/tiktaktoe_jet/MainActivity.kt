@@ -43,6 +43,11 @@ class MainActivity : ComponentActivity() {
                     ){
                         PreparationGame(navController)
                     }
+                    composable(
+                        route = "screen_gameScreen"
+                    ){
+                        GameScreen(navController)
+                    }
 
                     composable(
                         route = "screen_game/{aliasText}/{timer}",
