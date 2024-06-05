@@ -3,6 +3,8 @@ package com.example.tiktaktoe_jet
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,6 +21,7 @@ fun Log(modifier: Modifier = Modifier, viewModel: GameViewModel = viewModel()) {
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Text(text = "Game Log", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(8.dp))
