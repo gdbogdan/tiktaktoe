@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,14 +35,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.simonsays_jet.R
 import java.util.Calendar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PostGame(navController: NavHostController, aliasText: String?, winner: String?, totalTime: String?){
+fun PostGame(navController: NavHostController, winner: String?, totalTime: String?){
     val dateAndTime = Calendar.getInstance().time
+    val sharedViewModel: SharedViewModel = viewModel() // Using the shared ViewModel
+    val aliasText by sharedViewModel.aliasText.observeAsState()
     Box(modifier = Modifier
         .fillMaxSize()
         .background(colorResource(id = R.color.purple_200)))
@@ -86,12 +91,13 @@ fun PostGame(navController: NavHostController, aliasText: String?, winner: Strin
             Text(text = stringResource(id = R.string.Log), fontWeight = FontWeight.Bold)
             val winnerPlayer: String = if(winner == "X") {
                 "Han ganado las X"
-            }else{
+            }else if(winner == "O"){
                 "Han ganado las O"
-            }
+            }else
+                "Hubo Empate"
 
             var logText by rememberSaveable {
-                mutableStateOf("Alias: $aliasText, tamaño de la parrila: 3x3,\n resultado: $winnerPlayer,\n tiempo total: $totalTime")
+                mutableStateOf("Alias: $aliasText, tamaño de la parrila: 3x3,\n Resultado: $winnerPlayer,\n Tiempo total: $totalTime seg")
             }
             TextField(
                 value = logText,
@@ -151,7 +157,7 @@ fun PostGame(navController: NavHostController, aliasText: String?, winner: Strin
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(
-                    onClick = { navController.navigate("screen_preparation") }
+                    onClick = { navController.navigate("screen_screenPanel") }
 
                 ) {
                     Text(text = stringResource(id = R.string.NewGame))

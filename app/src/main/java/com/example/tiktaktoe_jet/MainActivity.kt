@@ -3,8 +3,7 @@ package com.example.tiktaktoe_jet
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.remember
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,104 +13,64 @@ import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.PreferencesRepository
 import com.example.tiktaktoe_jet.ui.theme.TikTakToeTheme
 import com.example.tiktaktoe_jet.ui.theme.rememberWindowSizeClass
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val preferencesRepository = PreferencesRepository(applicationContext)
+        val gameViewModelFactory = GameViewModelFactory(preferencesRepository)
+        val preparationRepository = PreparationRepository(applicationContext)
+
+        preferencesRepository.clear()
 
         setContent {
             val window = rememberWindowSizeClass()
             TikTakToeTheme(window) {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "screen_menu") {
-                    composable(
-                        route = "screen_menu"
-                    ) {
+                    composable(route = "screen_menu") {
                         Menu(navController)
                     }
 
-                    composable(
-                        route = "screen_help"
-                    ) {
+                    composable(route = "screen_help") {
                         Help(navController)
                     }
-                    composable(
-                        route = "screen_all_results"
-                    ) {
+
+                    composable(route = "screen_all_results") {
                         Resultados_Partidas(navController)
                     }
-
-                    composable(
-                        route = "screen_preparation",
-                    ) {
-                        PreparationGame(navController)
-                    }
-                    composable(
-                        route = "screen_gameScreen"
-                    ) {
-                        GameScreen(navController)
+                    composable(route = "screen_log") {
+                        val gameViewModel: GameViewModel = viewModel()
+                        Log(viewModel = gameViewModel)
                     }
 
+                    composable(route = "screen_preparation") {
+                        PreparationGame(preparationRepository)
+                    }
+
+                    composable(route = "screen_screenPanel") {
+                        AdaptiveBipanelScreen(navController, gameViewModelFactory)
+                    }
+
                     composable(
-                        route = "screen_game/{aliasText}/{timer}",
+                        route = "screen_postgame/{winner}/{totalTime}",
                         arguments = listOf(
-                            navArgument("aliasText") {
-                                type = NavType.StringType
-                            },
-                            navArgument("timer") {
-                                type = NavType.BoolType
-                            }
+
+                            navArgument("winner") { type = NavType.StringType },
+                            navArgument("totalTime") { type = NavType.StringType }
                         )
                     ) { backStackEntry ->
-                        val aliasText = backStackEntry.arguments?.getString("aliasText")
-                        val timer = backStackEntry.arguments?.getBoolean("timer")
-                        val viewModelFactory = remember {
-                            GameViewModelFactory(preferencesRepository)
-                        }
-                        Game(navController, aliasText, timer, viewModelFactory)
-                    }
 
-                    composable(
-                        route = "screen_multigame/{aliasText}/{timer}",
-                        arguments = listOf(
-                            navArgument("aliasText") {
-                                type = NavType.StringType
-                            },
-                            navArgument("timer") {
-                                type = NavType.BoolType
-                            }
-                        )
-                    ) { backStackEntry ->
-                        val aliasText = backStackEntry.arguments?.getString("aliasText")
-                        val timer = backStackEntry.arguments?.getBoolean("timer")
-                        val viewModelFactory = remember {
-                            GameViewModelFactory(preferencesRepository)
-                        }
-                        MultiGame(navController, aliasText, timer, viewModelFactory)
-                    }
-
-                    composable(
-                        route = "screen_postgame/{aliasText}/{winner}/{totalTime}",
-                        arguments = listOf(
-                            navArgument("aliasText") {
-                                type = NavType.StringType
-                            },
-                            navArgument("winner") {
-                                type = NavType.StringType
-                            },
-                            navArgument("totalTime") {
-                                type = NavType.StringType
-                            }
-                        )
-                    ) { backStackEntry ->
-                        val aliasText = backStackEntry.arguments?.getString("aliasText")
                         val winner = backStackEntry.arguments?.getString("winner")
                         val totalTime = backStackEntry.arguments?.getString("totalTime")
-                        PostGame(navController, aliasText, winner, totalTime)
+                        PostGame(navController, winner, totalTime)
                     }
                 }
             }
         }
     }
 }
+
+
+

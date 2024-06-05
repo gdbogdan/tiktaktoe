@@ -81,7 +81,7 @@ fun Menu(navController: NavHostController) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = { navController.navigate("screen_gameScreen") },
+                    onClick = { navController.navigate("screen_screenPanel") },
                     modifier = Modifier.padding(bottom = 5.dp)
                 ) {
                     Text(text = stringResource(id = R.string.Start))

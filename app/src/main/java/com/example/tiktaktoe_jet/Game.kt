@@ -1,99 +1,91 @@
 package com.example.tiktaktoe_jet
 
 import androidx.compose.foundation.Image
-import androidx.compose.runtime.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.example.simonsays_jet.R
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModelProvider
+import androidx.compose.runtime.*
 
 @Composable
 fun Game(
     navController: NavHostController,
-    aliasText: String?,
-    time: Boolean?,
-    viewModelFactory: ViewModelProvider.Factory
+    sharedViewModel: SharedViewModel,
+    gameViewModel: GameViewModel,
+    modifier: Modifier = Modifier
 ) {
-    val viewModel = viewModel<GameViewModel>(factory = viewModelFactory)
-    val boardState by viewModel.boardState.collectAsState()
-    val winner by viewModel.winner.collectAsState()
-    val seconds by viewModel.seconds.collectAsState()
+    val time by sharedViewModel.time.observeAsState(false)
+    val boardState by gameViewModel.boardState.collectAsState()
+    val winner by gameViewModel.winner.collectAsState()
+    val seconds by gameViewModel.seconds.collectAsState()
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
+            .padding(top = 16.dp)
             .background(colorResource(id = R.color.purple_200))
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 30.dp)
         ){
-            Image(
-                painter = painterResource(id = R.drawable.juego),
-                modifier = Modifier.size(90.dp), contentDescription = null)
-            Text(
-                text = stringResource(id = R.string.Game),
-                fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp),
-                fontWeight = FontWeight.Bold)
+            Image(painter = painterResource(id = R.drawable.juego),modifier = Modifier.size(90.dp), contentDescription = null)
+            Text(text = stringResource(id = R.string.Game), fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp), fontWeight = FontWeight.Bold)
         }
-        if(time == true){
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .padding(bottom = 5.dp)
-                    .padding(start = 5.dp)
-            ){
-                Text(
-                    text = stringResource(id = R.string.Timer),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 25.sp)
-                Text(
-                    text = "$seconds",
-                    fontSize = 25.sp)
-
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .padding(bottom = 30.dp)
+                .padding(start = 10.dp)
+        ){
+            println(time)
+            if(time) {
+                Text(text = stringResource(id = R.string.Timer), fontWeight = FontWeight.Bold, fontSize = 25.sp)
+                Text(text = "$seconds", fontSize = 25.sp)
             }
         }
-
         Column (
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val winnerMessage: String = if(viewModel.winner.toString() == "Tie"){
+            val winnerMessage: String = if(winner == "isTie"){
                 "Empate"
-            }else
+            }else {
                 "$winner Ganó"
+            }
             if (winner != null){
                 Text(
                     text =  winnerMessage,
                     textAlign = TextAlign.Center,
-                    fontSize = 40.sp
+                    fontSize = 40.sp,
+                    modifier = Modifier.padding(10.dp)
                 )
             }
 
             Board(
                 boardState = boardState,
                 onCellClick = { row, col ->
-                    viewModel.onCellClick(row, col)
+                    gameViewModel.onCellClick(row, col)
                 })
-            val totalTime: String = if(time == false){
+            val totalTime: String = if(!time){
                 "0"
             }else{
                 seconds.toString()
@@ -102,8 +94,8 @@ fun Game(
             if(winner != null) {
                 Button(
                     onClick = {
-                        viewModel.resetBoard()
-                        navController.navigate("screen_postgame/$aliasText/$winner/$totalTime")
+                        gameViewModel.resetBoard()
+                        navController.navigate("screen_postgame/$winner/$totalTime")
                     }) {
                     Text(text = stringResource(id = R.string.End))
                 }
@@ -112,16 +104,16 @@ fun Game(
     }
 }
 
+
 @Composable
 fun Board(boardState: Array<Array<String>>, onCellClick: (Int, Int) -> Unit) {
     Column {
-        for (row in 0..2) {
+        for (row in boardState.indices) {
             Row {
-                for (col in 0..2) {
-                    Cell(
-                        value = boardState[row][col],
-                        onClick = { onCellClick(row, col) }
-                    )
+                for (col in boardState[row].indices) {
+                    Cell(boardState[row][col]) {
+                        onCellClick(row, col)
+                    }
                 }
             }
         }
@@ -133,11 +125,11 @@ fun Cell(value: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(64.dp)
-            .border(2.dp, Color.Black)
-            .background(Color.White)
+            .padding(4.dp)
+            .background(Color.Gray)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = value, fontSize = 32.sp)
+        Text(text = value, fontSize = 32.sp, color = Color.White)
     }
 }
