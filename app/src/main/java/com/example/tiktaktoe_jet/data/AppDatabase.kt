@@ -1,9 +1,11 @@
-package com.example.tiktaktoe_jet
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.dao.PreparationDataDao
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.model.PreparationData
 
 @Database(entities = [PreparationData::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {

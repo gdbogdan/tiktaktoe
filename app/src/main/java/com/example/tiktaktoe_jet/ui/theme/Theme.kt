@@ -16,6 +16,11 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.model.Typography
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.utils.LocalAppDimens
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.utils.LocalOrientationMode
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.utils.WindowSize
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.utils.WindowSizeClass
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,

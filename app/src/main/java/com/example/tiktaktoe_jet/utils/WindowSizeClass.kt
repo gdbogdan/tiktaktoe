@@ -1,4 +1,4 @@
-package com.example.tiktaktoe_jet.ui.theme
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -8,19 +8,19 @@ import androidx.compose.ui.platform.LocalConfiguration
 
 sealed class WindowSize(val size:Int){
 
-    data class Small(val smallSize:Int):WindowSize(smallSize)
-    data class Compact(val compactSize:Int):WindowSize(compactSize)
-    data class Medium(val mediumSize:Int):WindowSize(mediumSize)
-    data class Large(val largeSize:Int):WindowSize(largeSize)
+    data class Small(val smallSize:Int): WindowSize(smallSize)
+    data class Compact(val compactSize:Int): WindowSize(compactSize)
+    data class Medium(val mediumSize:Int): WindowSize(mediumSize)
+    data class Large(val largeSize:Int): WindowSize(largeSize)
 }
 
 data class WindowSizeClass(
-    val width:WindowSize,
-    val height:WindowSize
+    val width: WindowSize,
+    val height: WindowSize
 )
 
 @Composable
-fun rememberWindowSizeClass():WindowSizeClass{
+fun rememberWindowSizeClass(): WindowSizeClass {
 
     val config = LocalConfiguration.current
 

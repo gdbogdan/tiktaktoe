@@ -1,8 +1,9 @@
-package com.example.tiktaktoe_jet
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.PreferencesRepository
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.repository.PreferencesRepository
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.GameViewModel
 
 class GameViewModelFactory(
     private val preferencesRepository: PreferencesRepository

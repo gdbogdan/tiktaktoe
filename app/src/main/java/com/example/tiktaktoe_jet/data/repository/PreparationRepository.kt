@@ -1,8 +1,10 @@
 
-package com.example.tiktaktoe_jet
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.repository
 
 import android.content.Context
 import androidx.room.Room
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.AppDatabase
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.model.PreparationData
 
 
 class PreparationRepository(context: Context) {

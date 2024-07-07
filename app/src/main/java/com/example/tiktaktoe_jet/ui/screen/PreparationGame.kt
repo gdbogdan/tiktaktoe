@@ -1,4 +1,4 @@
-package com.example.tiktaktoe_jet
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.ui.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -19,6 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.simonsays_jet.R
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.PreparationGameViewModel
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.factory.PreparationGameViewModelFactory
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.SharedViewModel
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.repository.PreparationRepository
 
 @Composable
 fun PreparationGame(repository: PreparationRepository) {
@@ -36,13 +40,22 @@ fun PreparationGame(repository: PreparationRepository) {
             .fillMaxSize()
             .background(colorResource(id = R.color.purple_200))
     ) {
-        Column(modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState())) {
+        Column(
+            modifier = Modifier.padding(top = 10.dp, start = 10.dp, end = 10.dp)
+                .verticalScroll(rememberScrollState())) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
             ) {
-                Image(painter = painterResource(id = R.drawable.ajuste), modifier = Modifier.size(50.dp), contentDescription = null)
-                Text(text = stringResource(id = R.string.Conf), fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp), fontWeight = FontWeight.Bold)
+                Image(
+                    painter = painterResource(id = R.drawable.ajuste),
+                    modifier = Modifier.size(50.dp),
+                    contentDescription = null)
+                Text(
+                    text = stringResource(id = R.string.Conf),
+                    fontSize = 24.sp,
+                    modifier = Modifier.padding(start = 10.dp),
+                    fontWeight = FontWeight.Bold)
             }
             TextField(
                 value = aliasText,
@@ -50,7 +63,7 @@ fun PreparationGame(repository: PreparationRepository) {
                     preparationViewModel.setAliasText(it)
                     sharedViewModel.setAliasText(it) // Update the shared ViewModel
                 },
-                label = { Text("Alias") },
+                label = { Text(text = stringResource(id = R.string.Alias))},
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -83,18 +96,18 @@ fun PreparationGame(repository: PreparationRepository) {
                         sharedViewModel.setTime(it) // Update the shared ViewModel
                     }
                 )
-                Text(text = "Time")
+                Text(text = stringResource(id = R.string.Tiempo))
             }
 
             Button(
                 onClick = {
                     preparationViewModel.saveData()
-                    Toast.makeText(context, "Datos guardados correctamente", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,context.getString(R.string.Saved), Toast.LENGTH_SHORT).show()
 
                 },
                 modifier = Modifier.padding(top = 16.dp)
             ) {
-                Text("Save and Continue")
+                Text(text = stringResource(id = R.string.Save))
             }
         }
     }

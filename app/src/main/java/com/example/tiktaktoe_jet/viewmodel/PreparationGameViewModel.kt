@@ -1,7 +1,9 @@
-package com.example.tiktaktoe_jet
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.model.PreparationData
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.repository.PreparationRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

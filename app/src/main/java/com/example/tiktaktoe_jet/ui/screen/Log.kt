@@ -1,18 +1,19 @@
-package com.example.tiktaktoe_jet
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.ui.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.simonsays_jet.R
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.GameViewModel
 
 @Composable
 fun Log(modifier: Modifier = Modifier, viewModel: GameViewModel = viewModel()) {
@@ -21,9 +22,8 @@ fun Log(modifier: Modifier = Modifier, viewModel: GameViewModel = viewModel()) {
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
-            .verticalScroll(rememberScrollState())
     ) {
-        Text(text = "Game Log", fontWeight = FontWeight.Bold)
+        Text(text = stringResource(id = R.string.Logs), fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(8.dp))
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(moves) { move ->

@@ -1,4 +1,4 @@
-package com.example.tiktaktoe_jet.ui.theme
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.model
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

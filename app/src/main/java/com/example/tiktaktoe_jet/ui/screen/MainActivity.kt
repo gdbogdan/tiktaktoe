@@ -1,4 +1,4 @@
-package com.example.tiktaktoe_jet
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.ui.screen
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,9 +9,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.PreferencesRepository
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.GameViewModel
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.factory.GameViewModelFactory
+import com.example.tiktaktoe_jet.Resultados_Partidas
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.repository.PreferencesRepository
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.repository.PreparationRepository
 import com.example.tiktaktoe_jet.ui.theme.TikTakToeTheme
-import com.example.tiktaktoe_jet.ui.theme.rememberWindowSizeClass
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.utils.rememberWindowSizeClass
+import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.SharedViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -21,6 +26,7 @@ class MainActivity : ComponentActivity() {
         val preferencesRepository = PreferencesRepository(applicationContext)
         val gameViewModelFactory = GameViewModelFactory(preferencesRepository)
         val preparationRepository = PreparationRepository(applicationContext)
+        val sharedViewModel = SharedViewModel()
 
         preferencesRepository.clear()
 
@@ -50,7 +56,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(route = "screen_screenPanel") {
-                        AdaptiveBipanelScreen(navController, gameViewModelFactory)
+                        AdaptiveBipanelScreen(navController, gameViewModelFactory, sharedViewModel)
                     }
 
                     composable(

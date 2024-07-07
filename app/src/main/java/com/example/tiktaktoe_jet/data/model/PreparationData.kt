@@ -1,4 +1,4 @@
-package com.example.tiktaktoe_jet
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

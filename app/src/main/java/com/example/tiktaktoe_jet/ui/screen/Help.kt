@@ -1,4 +1,4 @@
-package com.example.tiktaktoe_jet
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.ui.screen
 
 import android.annotation.SuppressLint
 import android.media.Image

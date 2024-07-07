@@ -22,11 +22,14 @@
     <string name="Tiempo">Control de tiempo</string>
     <string name="EmptyAlias">Has de escribir un Alias</string>
     <string name="Start">Empezar partida</string>
+    <string name="Save">Save and Continue</string>
+    <string name="Saved">Datos guardados correctamente</string>
 
     <!--Game-->
     <string name="Game">Partida</string>
     <string name="Score">Score</string>
     <string name="Timer">Time:</string>
+    <string name="Empate">Empate</string>
     <string name="End">Finalizar partida</string>
 
     <!--MultiGame-->
@@ -38,11 +41,15 @@
     <string name="HintMail">micorreo@correo.com</string>
     <string name="email">E-mail destinatario</string>
     <string name="btnEmail">Enviar email</string>
+    <string name="toastEmail">Formato de correo electrónico inválido</string>
     <string name="NewGame">Nueva partida</string>
 
     <!--Resultados_partidas-->
     <string name="Partidas_Anteriores">Partidas anteriores</string>
     <string name="Resultado_Partidas">Estás en la pantalla de resultados anteriores</string>
+
+    <!--Logs-->
+    <string name="Logs">Game Log</string>
 
 
 </resources>
