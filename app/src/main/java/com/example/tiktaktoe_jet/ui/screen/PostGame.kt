@@ -3,6 +3,7 @@ package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.ui.screen
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,10 +30,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -109,11 +111,11 @@ fun PostGame(navController: NavHostController, winner: String?, totalTime: Strin
 
             Text(text = stringResource(id = R.string.Log), fontWeight = FontWeight.Bold)
             val winnerPlayer: String = if (winner == "X") {
-                "Han ganado las X"
+                stringResource(id = R.string.X)
             } else if (winner == "O") {
-                "Han ganado las O"
+                stringResource(id = R.string.O)
             } else
-                "Hubo Empate"
+                stringResource(id = R.string.Tie)
 
             var logText by rememberSaveable {
                 mutableStateOf("Alias: $aliasText, tamaño de la parrila: 3x3,\n Resultado: $winnerPlayer,\n Tiempo total: $totalTime seg")
@@ -142,7 +144,7 @@ fun PostGame(navController: NavHostController, winner: String?, totalTime: Strin
                     )
                 }
             )
-            val subject = "Partida tres en raya"
+            val subject = stringResource(id = R.string.asunto)
             val context = LocalContext.current
 
             Row(

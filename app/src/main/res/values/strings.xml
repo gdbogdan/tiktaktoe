@@ -40,9 +40,13 @@
     <string name="Log">Valores del Log</string>
     <string name="HintMail">micorreo@correo.com</string>
     <string name="email">E-mail destinatario</string>
+    <string name="asunto">Partida tres en raya</string>
     <string name="btnEmail">Enviar email</string>
     <string name="toastEmail">Formato de correo electrónico inválido</string>
     <string name="NewGame">Nueva partida</string>
+    <string name="X">Han ganado las X</string>
+    <string name="O">Han ganado las O</string>
+    <string name="Tie">Hubo empate</string>
 
     <!--Resultados_partidas-->
     <string name="Partidas_Anteriores">Partidas anteriores</string>

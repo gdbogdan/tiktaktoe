@@ -10,7 +10,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -23,7 +22,6 @@ import androidx.compose.ui.unit.sp
 import com.example.simonsays_jet.R
 import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.GameViewModel
 import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.SharedViewModel
-import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.model.Board
 
 @Composable
 fun MultiGame(

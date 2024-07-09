@@ -1,4 +1,4 @@
-package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.model
+package com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,7 +10,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +37,8 @@ fun Game(
     val boardState by gameViewModel.boardState.collectAsState()
     val winner by gameViewModel.winner.collectAsState()
     val seconds by gameViewModel.seconds.collectAsState()
+    val totalTime = "0"
+
 
     Column(
 
@@ -52,7 +53,16 @@ fun Game(
             modifier = Modifier.padding(bottom = 30.dp)
         ){
             Image(painter = painterResource(id = R.drawable.juego),modifier = Modifier.size(90.dp), contentDescription = null)
-            Text(text = stringResource(id = R.string.Game), fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp), fontWeight = FontWeight.Bold)
+            Text(text = stringResource(id = R.string.Game), fontSize = 24.sp, modifier = Modifier.padding(start = 10.dp, end = 30.dp), fontWeight = FontWeight.Bold)
+            if(winner != null) {
+                Button(
+                    onClick = {
+                        gameViewModel.resetBoard()
+                        navController.navigate("screen_postgame/$winner/$totalTime")
+                    }) {
+                    Text(text = stringResource(id = R.string.End))
+                }
+            }
         }
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -91,20 +101,10 @@ fun Game(
                 onCellClick = { row, col ->
                     gameViewModel.onCellClick(row, col)
                 })
-            val totalTime: String = if(!time){
+            if(!time){
                 "0"
             }else{
                 seconds.toString()
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            if(winner != null) {
-                Button(
-                    onClick = {
-                        gameViewModel.resetBoard()
-                        navController.navigate("screen_postgame/$winner/$totalTime")
-                    }) {
-                    Text(text = stringResource(id = R.string.End))
-                }
             }
         }
     }

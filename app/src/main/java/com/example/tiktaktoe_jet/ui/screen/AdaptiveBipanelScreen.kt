@@ -12,7 +12,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.GameViewModel
 import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.viewmodel.SharedViewModel
-import com.example.tiktaktoe_jet.com.example.tiktaktoe_jet.data.model.Game
 
 @Composable
 fun AdaptiveBipanelScreen(navController: NavHostController, viewModelFactory: ViewModelProvider.Factory, sharedViewModel: SharedViewModel) {

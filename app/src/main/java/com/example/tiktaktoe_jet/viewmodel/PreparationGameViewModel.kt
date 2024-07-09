@@ -16,7 +16,7 @@ class PreparationGameViewModel(private val repository: PreparationRepository) : 
     private val _time = MutableStateFlow(false)
     val time: StateFlow<Boolean> get() = _time
 
-    private val _difficulty = MutableStateFlow("Easy")
+    private val _difficulty = MutableStateFlow("individual")
     val difficulty: StateFlow<String> get() = _difficulty
 
     init {
